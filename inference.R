@@ -3,8 +3,9 @@ library(dplyr)
 library(lubridate)
 library(ggplot2)
 
+service <- tbl_df(import("311_daily_contact_centre_trends.xlsx",
+                         sheet="all"))
 
-service <- tbl_df(import("311_daily_contact_centre_trends.xlsx", sheet="all"))
 
 # Number of entries per year
 service %>% group_by(year(Date)) %>% summarise(n_days = n())
@@ -18,8 +19,7 @@ t.test(service_11$`Calls Answered %`, mu = 0.8)
 service %>% filter(year(Date) %in% c(2011, 2012)) -> service11_12
 
 # Boxplots
-service11_12 %>% ggplot(aes(x=factor(year(Date)), y=`Average Talk Time (sec)`)) +
-  geom_boxplot()
+service11_12 %>% ggplot(aes(x=factor(year(Date)), y=`Average Talk Time (sec)`))+ geom_boxplot()
 
 # Extract 2010:2013
 service %>% filter(year(Date) %in% 2010:2013) -> service_full
